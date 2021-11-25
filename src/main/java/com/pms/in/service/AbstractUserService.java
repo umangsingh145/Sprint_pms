@@ -11,7 +11,7 @@ import com.pms.in.entities.AbstractUser;
 import com.pms.in.repository.AbstractUserRepository;
 
 @Service
-public class AbstractUserService {
+public class AbstractUserService implements IAbstractUserService{
 
 	public boolean isLoggedIn;
 
@@ -24,8 +24,7 @@ public class AbstractUserService {
 
 	public AbstractUser register(AbstractUser abstractUser) {
 		LOG.info("register");
-		if (abstractUserRepository.findByUserName(abstractUser.getUserName()).getUserName()
-				.equalsIgnoreCase(abstractUser.getUserName()))
+		if (abstractUserRepository.findByUserName(abstractUser.getUserName())!=null)
 			throw new AbstractUserAlreadyExistsException();
 		return abstractUserRepository.save(abstractUser);
 	}

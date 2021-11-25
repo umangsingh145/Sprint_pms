@@ -28,6 +28,7 @@ public class AbstractUserController {
 		LOG.info("Controller register");
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("message", "User registered successfully.");
+		LOG.info(headers.toString());
 		return new ResponseEntity<AbstractUser>(userService.register(abstractUser), headers, HttpStatus.CREATED);
 	}
 

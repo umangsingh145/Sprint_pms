@@ -1,5 +1,6 @@
 package com.pms.in.entities;
 
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -73,3 +74,4 @@ public class AbstractUser {
 	}
 
 }
+
