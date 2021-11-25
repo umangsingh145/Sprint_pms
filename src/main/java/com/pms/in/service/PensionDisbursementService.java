@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import com.pms.in.entities.BankDetails;
 import com.pms.in.entities.PensionDetails;
 import com.pms.in.entities.PensionerDetails;
+import com.pms.in.repository.BankRepository;
+import com.pms.in.repository.PensionRepository;
 import com.pms.in.repository.PensionerRepository;
 
 @Service
@@ -19,20 +21,17 @@ public class PensionDisbursementService {
 	private static Logger LOG = LoggerFactory.getLogger(PensionDisbursementService.class);
 
 	@Autowired
-	private PensionerDetails pensionerDetails;
+	private PensionService pensionService;
 
 	@Autowired
-	private PensionDetails pensionDetails;
-	
-	@Autowired
-	private PensionService pensionService;
-	
-	@Autowired
-	private BankDetails bankDetails;
+	private BankRepository bankRepository;
 
 	@Autowired
 	private PensionerRepository pensionerRepository;
 	
+	@Autowired
+	private PensionRepository pensionRepository;
+
 	private static final Map<String, Double> banks = createMap();
 
 	private static Map<String, Double> createMap() {
@@ -47,7 +46,7 @@ public class PensionDisbursementService {
 
 		return tempBanks;
 	}
-	
+
 	public double getBankServiceCharge(String bankName) {
 		if (banks.containsKey(bankName.toUpperCase()))
 			return banks.get(bankName.toUpperCase());
@@ -57,8 +56,9 @@ public class PensionDisbursementService {
 
 	public PensionDetails calculatePension(int aadhar) {
 		LOG.info("START");
-
-		pensionerDetails = pensionerRepository.findByAadhar(aadhar);
+		PensionerDetails pensionerDetails=pensionerRepository.findByAadhar(aadhar);
+		PensionDetails pensionDetails=pensionRepository.getById(pensionerDetails.getPensioner_id());
+		BankDetails bankDetails=bankRepository.getById(pensionerDetails.getAcc_No());
 		int salary = pensionerDetails.getSalary();
 		String typeOfPension = pensionerDetails.getPensionType();
 		double pension = -1;
@@ -75,22 +75,23 @@ public class PensionDisbursementService {
 
 		return pensionDetails;
 	}
-	
+
 	public boolean processPension(PensionDetails pensionDetails) {
 		LOG.info("START");
-		
+		PensionerDetails pensionerDetails=pensionerRepository.getById(pensionDetails.getPensioner_id());
+		BankDetails bankDetails=bankRepository.getById(pensionerDetails.getAcc_No());
+
 		double bankServiceCharge = banks.get(bankDetails.getBankName().toUpperCase());
 		if ((pensionDetails.getAmount().equals(calculatePension(pensionerDetails.getAadhar()).getAmount()))
 				&& (pensionDetails.getCharges().equals(bankServiceCharge))) {
 			pensionDetails.setCharges(bankServiceCharge);
 			pensionService.updatePensionDetails(pensionDetails);
 			return true;
-			
+
 		}
 		LOG.info("END");
 
 		return false;
 	}
-	
 
 }

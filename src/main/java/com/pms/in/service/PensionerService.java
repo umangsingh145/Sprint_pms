@@ -8,36 +8,30 @@ import org.springframework.stereotype.Service;
 import com.pms.in.entities.PensionerDetails;
 import com.pms.in.exception.PensionerAlreadyExistsException;
 import com.pms.in.exception.PensionerDetailsNotFoundException;
-import com.pms.in.repository.PensionRepository;
 import com.pms.in.repository.PensionerRepository;
 
 @Service
-
 public class PensionerService {
 	public static final Logger LOG = LoggerFactory.getLogger(PensionerService.class);
 
 	@Autowired
-	private PensionerDetails pensionerDetails;
-
-	@Autowired
 	private PensionerRepository pensionerRepository;
-	
-	@Autowired
-	private PensionRepository pensionRepository;
 
 	public boolean validatePensioner(String name, int pan, int aadhar, String type) {
 		LOG.info("START");
-		pensionerDetails = pensionerRepository.findByAadhar(aadhar);
-		if (pensionerDetails != null) {
-			if (pensionerDetails.getPan()==pan && pensionerDetails.getPensionType().equalsIgnoreCase(type)) {
+		PensionerDetails validatepensioner;
+
+		validatepensioner = pensionerRepository.findByAadhar(aadhar);
+		if (validatepensioner != null) {
+			if (validatepensioner.getPan() == pan && validatepensioner.getPensionType().equalsIgnoreCase(type)) {
 				LOG.info("MATCHED");
 				return true;
-			}	
-		}
-		else {
+			}
+		} else {
 			LOG.info("Invalid pensioner detail provided, please provide valid detail.");
-			throw new PensionerDetailsNotFoundException("Invalid pensioner detail provided, please provide valid detail.");
-			
+			throw new PensionerDetailsNotFoundException(
+					"Invalid pensioner detail provided, please provide valid detail.");
+
 		}
 		return false;
 
@@ -70,8 +64,8 @@ public class PensionerService {
 
 	public PensionerDetails deletePensionerDetails(int pensioner_id) {
 		LOG.info("PensionerDetails");
-		if (pensionRepository.existsById(pensioner_id)) {
-			pensionRepository.deleteById(pensioner_id);
+		if (pensionerRepository.existsById(pensioner_id)) {
+			pensionerRepository.deleteById(pensioner_id);
 			return null;
 		} else {
 			LOG.info("Pensioner is NOT available.");

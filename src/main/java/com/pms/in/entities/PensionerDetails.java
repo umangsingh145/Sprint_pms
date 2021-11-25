@@ -35,6 +35,9 @@ public class PensionerDetails implements Serializable {
 
 	@Column
 	private int salary;
+	
+	@Column
+	private long acc_No;
 
 	@Column
 	private String pensionType;
@@ -56,19 +59,21 @@ public class PensionerDetails implements Serializable {
 
 
 
-	public PensionerDetails(int pensioner_id, int age, int aadhar, int pan, int salary, String pensionType) {
+	public PensionerDetails(int pensioner_id, int age, int aadhar, int pan, int salary, int acc_No,
+			String pensionType) {
 		super();
 		this.pensioner_id = pensioner_id;
 		this.age = age;
 		this.aadhar = aadhar;
 		this.pan = pan;
 		this.salary = salary;
+		this.acc_No = acc_No;
 		this.pensionType = pensionType;
 	}
 
 
 
-	public PensionerDetails(int pensioner_id, int age, int aadhar, int pan, int salary, String pensionType,
+	public PensionerDetails(int pensioner_id, int age, int aadhar, int pan, int salary, int acc_No, String pensionType,
 			PensionDetails pensionDetails) {
 		super();
 		this.pensioner_id = pensioner_id;
@@ -76,13 +81,14 @@ public class PensionerDetails implements Serializable {
 		this.aadhar = aadhar;
 		this.pan = pan;
 		this.salary = salary;
+		this.acc_No = acc_No;
 		this.pensionType = pensionType;
 		this.pensionDetails = pensionDetails;
 	}
 
 
 
-	public PensionerDetails(int pensioner_id, int age, int aadhar, int pan, int salary, String pensionType,
+	public PensionerDetails(int pensioner_id, int age, int aadhar, int pan, int salary, int acc_No, String pensionType,
 			PensionDetails pensionDetails, BankDetails bankDetails) {
 		super();
 		this.pensioner_id = pensioner_id;
@@ -90,6 +96,7 @@ public class PensionerDetails implements Serializable {
 		this.aadhar = aadhar;
 		this.pan = pan;
 		this.salary = salary;
+		this.acc_No = acc_No;
 		this.pensionType = pensionType;
 		this.pensionDetails = pensionDetails;
 		this.bankDetails = bankDetails;
@@ -157,6 +164,18 @@ public class PensionerDetails implements Serializable {
 
 
 
+	public long getAcc_No() {
+		return acc_No;
+	}
+
+
+
+	public void setAcc_No(int acc_No) {
+		this.acc_No = acc_No;
+	}
+
+
+
 	public String getPensionType() {
 		return pensionType;
 	}
@@ -196,10 +215,11 @@ public class PensionerDetails implements Serializable {
 	@Override
 	public String toString() {
 		return "PensionerDetails [pensioner_id=" + pensioner_id + ", age=" + age + ", aadhar=" + aadhar + ", pan=" + pan
-				+ ", salary=" + salary + ", pensionType=" + pensionType + ", pensionDetails=" + pensionDetails
-				+ ", bankDetails=" + bankDetails + "]";
+				+ ", salary=" + salary + ", acc_No=" + acc_No + ", pensionType=" + pensionType + ", pensionDetails="
+				+ pensionDetails + ", bankDetails=" + bankDetails + "]";
 	}
-
+	
+	
 	
 
 	
