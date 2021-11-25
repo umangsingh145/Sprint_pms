@@ -6,6 +6,5 @@ public interface IPensionService
 {
 	public PensionDetails addPensionDetails(PensionDetails pensionDetails);
 	public PensionDetails updatePensionDetails(PensionDetails pensionDetails);
-	public PensionDetails viewPensionDetails(PensionDetails pensionDetails);
-	public void deletePensionDetails(int pensionerId);
+	public PensionDetails viewPensionDetails(int pensionerId);
 }

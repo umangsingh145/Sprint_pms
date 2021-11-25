@@ -28,26 +28,30 @@ public class PensionDisbursementService {
 
 	@Autowired
 	private PensionerRepository pensionerRepository;
-	
+
 	@Autowired
 	private PensionRepository pensionRepository;
 
 	private static final Map<String, Double> banks = createMap();
 
 	private static Map<String, Double> createMap() {
-		LOG.info("START");
+		LOG.info("ServicecreateMap");
 
 		Map<String, Double> tempBanks = new HashMap<>();
 		tempBanks.put("SBI", 500.0);
-		tempBanks.put("IOB", 500.0);
-		tempBanks.put("BYTECARD", 550.0);
-		tempBanks.put("PANNIER", 550.0);
-		LOG.info("END");
+		tempBanks.put("PNB", 500.0);
+		tempBanks.put("BOB", 500.0);
+		tempBanks.put("HDFC", 550.0);
+		tempBanks.put("AXIS", 550.0);
+		tempBanks.put("HBSC", 550.0);
+		tempBanks.put("DBS", 550.0);
 
 		return tempBanks;
 	}
 
 	public double getBankServiceCharge(String bankName) {
+		LOG.info("ServicegetBankServiceCharge");
+
 		if (banks.containsKey(bankName.toUpperCase()))
 			return banks.get(bankName.toUpperCase());
 		else
@@ -55,43 +59,51 @@ public class PensionDisbursementService {
 	}
 
 	public PensionDetails calculatePension(int aadhar) {
-		LOG.info("START");
-		PensionerDetails pensionerDetails=pensionerRepository.findByAadhar(aadhar);
-		PensionDetails pensionDetails=pensionRepository.getById(pensionerDetails.getPensioner_id());
-		BankDetails bankDetails=bankRepository.getById(pensionerDetails.getAcc_No());
+		LOG.info("ServicecalculatePension");
+		PensionerDetails pensionerDetails = pensionerRepository.findByAadhar(aadhar);
+		PensionDetails pensionDetails = pensionRepository.getById(pensionerDetails.getPensioner_id());
+		BankDetails bankDetails = bankRepository.getById(pensionerDetails.getAcc_No());
 		int salary = pensionerDetails.getSalary();
 		String typeOfPension = pensionerDetails.getPensionType();
 		double pension = -1;
 		if (typeOfPension.equalsIgnoreCase("Self")) {
-			pension = salary/2;
+			pension = salary / 2;
 		} else {
-			pension = salary/4;
+			pension = salary / 4;
 
 		}
 		pensionDetails.setAmount(pension);
 		pensionDetails.setCharges(getBankServiceCharge(bankDetails.getBankName()));
+		if (pensionDetails.getCharges() == 500) {
+			pensionDetails.setBankType("Public");
+		} else {
+			pensionDetails.setBankType("Private");
+		}
+
 		pensionService.updatePensionDetails(pensionDetails);
-		LOG.info("END");
 
 		return pensionDetails;
 	}
 
 	public boolean processPension(PensionDetails pensionDetails) {
-		LOG.info("START");
-		PensionerDetails pensionerDetails=pensionerRepository.getById(pensionDetails.getPensioner_id());
-		BankDetails bankDetails=bankRepository.getById(pensionerDetails.getAcc_No());
+		LOG.info("ServiceprocessPension");
+		PensionerDetails pensionerDetails = pensionerRepository.getById(pensionDetails.getPensioner_id());
+		BankDetails bankDetails = bankRepository.getById(pensionerDetails.getAcc_No());
 
 		double bankServiceCharge = banks.get(bankDetails.getBankName().toUpperCase());
 		if ((pensionDetails.getAmount().equals(calculatePension(pensionerDetails.getAadhar()).getAmount()))
 				&& (pensionDetails.getCharges().equals(bankServiceCharge))) {
 			pensionDetails.setCharges(bankServiceCharge);
+			pensionDetails.setStatusCode(10);
 			pensionService.updatePensionDetails(pensionDetails);
 			return true;
 
-		}
-		LOG.info("END");
+		} else {
 
-		return false;
+			pensionDetails.setStatusCode(21);
+			return false;
+		}
+
 	}
 
 }

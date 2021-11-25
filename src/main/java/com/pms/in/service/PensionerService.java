@@ -11,21 +11,26 @@ import com.pms.in.exception.PensionerDetailsNotFoundException;
 import com.pms.in.repository.PensionerRepository;
 
 @Service
-public class PensionerService {
+public class PensionerService implements IPensionerService {
 	public static final Logger LOG = LoggerFactory.getLogger(PensionerService.class);
 
 	@Autowired
 	private PensionerRepository pensionerRepository;
 
 	public boolean validatePensioner(String name, int pan, int aadhar, String type) {
-		LOG.info("START");
-		PensionerDetails validatepensioner;
+		LOG.info("ServicevalidatePensioner");
+		PensionerDetails validatepensioner = null;
 
 		validatepensioner = pensionerRepository.findByAadhar(aadhar);
 		if (validatepensioner != null) {
 			if (validatepensioner.getPan() == pan && validatepensioner.getPensionType().equalsIgnoreCase(type)) {
-				LOG.info("MATCHED");
+				LOG.info("Matched");
 				return true;
+			} else {
+				LOG.info("Invalid pensioner detail provided, please provide valid detail.");
+				throw new PensionerDetailsNotFoundException(
+						"Invalid pensioner detail provided, please provide valid detail.");
+
 			}
 		} else {
 			LOG.info("Invalid pensioner detail provided, please provide valid detail.");
@@ -33,12 +38,12 @@ public class PensionerService {
 					"Invalid pensioner detail provided, please provide valid detail.");
 
 		}
-		return false;
 
 	}
 
+	@Override
 	public PensionerDetails addPensionerDetails(PensionerDetails pensionerdetails) {
-		LOG.info("Pensioner Details");
+		LOG.info("ServiceaddPensionerDetails");
 		if (!pensionerRepository.existsById(pensionerdetails.getPensioner_id()))
 			return pensionerRepository.save(pensionerdetails);
 		else {
@@ -48,22 +53,20 @@ public class PensionerService {
 		}
 	}
 
-	// Update
+	@Override
 	public PensionerDetails updatePensionerDetails(PensionerDetails pensionerdetails) {
-		LOG.info("UpadtePensionerDetails");
+		LOG.info("ServiceUpadtePensionerDetails");
 		if (pensionerRepository.existsById(pensionerdetails.getPensioner_id()))
 			return pensionerRepository.save(pensionerdetails);
 
 		else {
-			LOG.info("Employee is NOT available.");
+			LOG.info("Pensioner is NOT available.");
 			throw new PensionerDetailsNotFoundException(" This Pensioner Details is not found.");
 		}
 	}
 
-//Delete
-
 	public PensionerDetails deletePensionerDetails(int pensioner_id) {
-		LOG.info("PensionerDetails");
+		LOG.info("ServiceDeletePensionerDetails");
 		if (pensionerRepository.existsById(pensioner_id)) {
 			pensionerRepository.deleteById(pensioner_id);
 			return null;
@@ -74,7 +77,7 @@ public class PensionerService {
 	}
 
 	public List<PensionerDetails> getAllPensionersDetails() {
-		System.out.println("Service getAllEmployees");
+		LOG.info("ServicegetAllPensioner");
 		return pensionerRepository.findAll();
 	}
 }

@@ -14,7 +14,7 @@ public class BankDetails {
 
 	@Column(nullable = false)
 	private String bankName;
-	
+
 	@Column
 	private String branch;
 

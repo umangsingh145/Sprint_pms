@@ -1,6 +1,5 @@
 package com.pms.in.entities;
 
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,9 +8,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="user_details")
+@Table(name = "user_details")
 public class AbstractUser {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int uid;
@@ -22,7 +21,6 @@ public class AbstractUser {
 	@Column
 	private String password;
 
-
 	public AbstractUser() {
 		super();
 	}
@@ -31,7 +29,7 @@ public class AbstractUser {
 		super();
 		this.userName = userName;
 		this.password = password;
-		
+
 	}
 
 	public AbstractUser(int uid, String userName, String password) {
@@ -39,7 +37,7 @@ public class AbstractUser {
 		this.uid = uid;
 		this.userName = userName;
 		this.password = password;
-		
+
 	}
 
 	public int getUid() {
@@ -66,12 +64,9 @@ public class AbstractUser {
 		this.password = password;
 	}
 
-	
-
 	@Override
 	public String toString() {
-		return "AppUser [uid=" + uid + ", userName=" + userName + ", password=" + password +  "]";
+		return "AppUser [uid=" + uid + ", userName=" + userName + ", password=" + password + "]";
 	}
 
 }
-

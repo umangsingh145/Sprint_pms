@@ -15,7 +15,6 @@ import com.pms.in.entities.PensionDetails;
 import com.pms.in.service.PensionDisbursementService;
 import com.pms.in.service.PensionerService;
 
-
 @RestController
 public class ProcessPensionModuleController {
 
@@ -28,13 +27,10 @@ public class ProcessPensionModuleController {
 	private static final Logger LOG = LoggerFactory.getLogger(ProcessPensionModuleController.class);
 
 	@GetMapping("/PensionDetail")
-	// @ApiOperation(value = "Provides the details of the pensioner", notes =
-	// "Validates the pensioner details on the basis of aadhar number", response =
-	// Pensioner.class)
 	public ResponseEntity<PensionDetails> getPensionDetail(@RequestParam String name, @RequestParam int pan,
 			@RequestParam int aadhar, @RequestParam String type) {
 
-		LOG.info("Controller");
+		LOG.info("ControllergetPensionDetail");
 		boolean pensionerDetails = pensionerService.validatePensioner(name, pan, aadhar, type);
 		if (pensionerDetails == true) {
 			HttpHeaders headers = new HttpHeaders();
@@ -44,7 +40,7 @@ public class ProcessPensionModuleController {
 			boolean pensionOutput = pensionDisbursementService.processPension(pensionDetails);
 			if (pensionOutput == true) {
 				HttpHeaders header = new HttpHeaders();
-				header.add("message", "10");
+				header.add("Success", "10");
 				LOG.info(headers.toString());
 
 				ResponseEntity<PensionDetails> response = new ResponseEntity<PensionDetails>(pensionDetails, header,
@@ -53,14 +49,17 @@ public class ProcessPensionModuleController {
 
 			} else {
 				HttpHeaders header = new HttpHeaders();
-				header.add("message", "21");
+				header.add("Pension amount calculated is wrong, Please redo the calculation", "21");
 				LOG.info(headers.toString());
+				ResponseEntity<PensionDetails> response = new ResponseEntity<PensionDetails>(pensionDetails, header,
+						HttpStatus.OK);
+				return response;
 
 			}
 
 		}
 		HttpHeaders heads = new HttpHeaders();
-		heads.add("message", "Not Validated.");
+		heads.add("Pension amount calculated is wrong, Please redo the calculation", "21.");
 		LOG.info(heads.toString());
 		PensionDetails pensionDetails = null;
 		ResponseEntity<PensionDetails> response = new ResponseEntity<PensionDetails>(pensionDetails, heads,

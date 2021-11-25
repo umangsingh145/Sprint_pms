@@ -22,27 +22,30 @@ public class AbstractUserController {
 	@Autowired
 	private AbstractUserService userService;
 
-	// http://localhost:8082/register
 	@PostMapping("/register")
 	public ResponseEntity<AbstractUser> register(@RequestBody AbstractUser abstractUser) {
-		LOG.info("Controller register");
+		LOG.info("Controllerregister");
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("message", "User registered successfully.");
 		LOG.info(headers.toString());
 		return new ResponseEntity<AbstractUser>(userService.register(abstractUser), headers, HttpStatus.CREATED);
 	}
 
-	// http://localhost:8082/login
 	@PutMapping("/login")
-	public AbstractUser login(@RequestBody AbstractUser abstractUser) {
-		LOG.info("Controller login");
-		return userService.login(abstractUser);
+	public ResponseEntity<AbstractUser> login(@RequestBody AbstractUser abstractUser) {
+		LOG.info("Controllerlogin");
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("message", "User logged in successfully.");
+		LOG.info(headers.toString());
+		return new ResponseEntity<AbstractUser>(userService.login(abstractUser), headers, HttpStatus.OK);
 	}
 
-	// http://localhost:8082/logout
 	@PutMapping("/logout")
-	public String logout(@RequestBody String userName) {
-		LOG.info("Controller logout");
-		return userService.logout(userName);
+	public ResponseEntity<String> logout(@RequestBody String userName) {
+		LOG.info("Controllerlogout");
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("message", "User logged out successfully.");
+		LOG.info(headers.toString());
+		return new ResponseEntity<String>(userService.logout(userName), headers, HttpStatus.OK);
 	}
 }

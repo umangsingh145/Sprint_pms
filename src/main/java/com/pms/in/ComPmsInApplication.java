@@ -13,9 +13,9 @@ public class ComPmsInApplication {
 
 	public static void main(String[] args) {
 		
-		LOG.info("Start");
+		LOG.info("START");
 		SpringApplication.run(ComPmsInApplication.class, args);
-		LOG.info("End");
+		LOG.info("END");
 	}
 
 }

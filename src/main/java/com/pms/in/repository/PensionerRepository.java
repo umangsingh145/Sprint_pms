@@ -7,13 +7,7 @@ import com.pms.in.entities.PensionerDetails;
 
 @Repository
 public interface PensionerRepository extends JpaRepository<PensionerDetails, Integer> {
-	
+
 	public abstract PensionerDetails findByAadhar(int aadhar);
 
-//	public boolean validatePensioner();
-//
-////	public PensionerDetails addPensionerDetails(PensionerDetails pensionerdetails);
-//
-//	public boolean existsById(int aadhar);
-
-	}
+}

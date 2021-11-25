@@ -8,5 +8,4 @@ import com.pms.in.entities.BankDetails;
 @Repository
 public interface BankRepository extends JpaRepository<BankDetails, Long> {
 
-	// public abstract BankDetails findByBankName(String BankName);
 }

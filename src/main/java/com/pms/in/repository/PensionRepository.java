@@ -8,6 +8,5 @@ import com.pms.in.entities.PensionDetails;
 
 @Repository
 public interface PensionRepository extends JpaRepository<PensionDetails, Integer> {
-	
-		
-	}
+
+}

@@ -15,12 +15,9 @@ import javax.persistence.Table;
 @Table(name = "pensioner_details")
 public class PensionerDetails implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -6741695700708873345L;
 
-	@Id // primary key
+	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int pensioner_id;
 
@@ -35,7 +32,7 @@ public class PensionerDetails implements Serializable {
 
 	@Column
 	private int salary;
-	
+
 	@Column
 	private long acc_No;
 
@@ -45,19 +42,15 @@ public class PensionerDetails implements Serializable {
 	@OneToOne
 	@JoinColumn(name = "pensioners_id")
 	private PensionDetails pensionDetails;
-	
+
 	@OneToOne
 	@JoinColumn(name = "accno")
 	private BankDetails bankDetails;
-	
-	
 
 	public PensionerDetails() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
-
 
 	public PensionerDetails(int pensioner_id, int age, int aadhar, int pan, int salary, int acc_No,
 			String pensionType) {
@@ -71,8 +64,6 @@ public class PensionerDetails implements Serializable {
 		this.pensionType = pensionType;
 	}
 
-
-
 	public PensionerDetails(int pensioner_id, int age, int aadhar, int pan, int salary, int acc_No, String pensionType,
 			PensionDetails pensionDetails) {
 		super();
@@ -85,8 +76,6 @@ public class PensionerDetails implements Serializable {
 		this.pensionType = pensionType;
 		this.pensionDetails = pensionDetails;
 	}
-
-
 
 	public PensionerDetails(int pensioner_id, int age, int aadhar, int pan, int salary, int acc_No, String pensionType,
 			PensionDetails pensionDetails, BankDetails bankDetails) {
@@ -102,115 +91,77 @@ public class PensionerDetails implements Serializable {
 		this.bankDetails = bankDetails;
 	}
 
-
-
 	public int getPensioner_id() {
 		return pensioner_id;
 	}
-
-
 
 	public void setPensioner_id(int pensioner_id) {
 		this.pensioner_id = pensioner_id;
 	}
 
-
-
 	public int getAge() {
 		return age;
 	}
-
-
 
 	public void setAge(int age) {
 		this.age = age;
 	}
 
-
-
 	public int getAadhar() {
 		return aadhar;
 	}
-
-
 
 	public void setAadhar(int aadhar) {
 		this.aadhar = aadhar;
 	}
 
-
-
 	public int getPan() {
 		return pan;
 	}
-
-
 
 	public void setPan(int pan) {
 		this.pan = pan;
 	}
 
-
-
 	public int getSalary() {
 		return salary;
 	}
-
-
 
 	public void setSalary(int salary) {
 		this.salary = salary;
 	}
 
-
-
 	public long getAcc_No() {
 		return acc_No;
 	}
-
-
 
 	public void setAcc_No(int acc_No) {
 		this.acc_No = acc_No;
 	}
 
-
-
 	public String getPensionType() {
 		return pensionType;
 	}
-
-
 
 	public void setPensionType(String pensionType) {
 		this.pensionType = pensionType;
 	}
 
-
-
 	public PensionDetails getPensionDetails() {
 		return pensionDetails;
 	}
-
-
 
 	public void setPensionDetails(PensionDetails pensionDetails) {
 		this.pensionDetails = pensionDetails;
 	}
 
-
-
 	public BankDetails getBankDetails() {
 		return bankDetails;
 	}
 
-
-
 	public void setBankDetails(BankDetails bankDetails) {
 		this.bankDetails = bankDetails;
 	}
-
-
 
 	@Override
 	public String toString() {
@@ -218,12 +169,5 @@ public class PensionerDetails implements Serializable {
 				+ ", salary=" + salary + ", acc_No=" + acc_No + ", pensionType=" + pensionType + ", pensionDetails="
 				+ pensionDetails + ", bankDetails=" + bankDetails + "]";
 	}
-	
-	
-	
-
-	
-
-	
 
 }

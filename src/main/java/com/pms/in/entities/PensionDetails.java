@@ -12,24 +12,22 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "pension_details")
 public class PensionDetails implements Serializable {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1173511369703296438L;
 
-	@Id // primary key
+	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int pensioners_id;
 
 	@Column
 	private Double amount;
-	
+
 	@Column
 	private Double charges;
-	
+
 	@Column
 	private String bankType;
-	
+
 	@Column
 	private int statusCode;
 
@@ -92,6 +90,5 @@ public class PensionDetails implements Serializable {
 		return "PensionDetails [pensioners_id=" + pensioners_id + ", amount=" + amount + ", charges=" + charges
 				+ ", bankType=" + bankType + ", statusCode=" + statusCode + "]";
 	}
-	
-	
+
 }

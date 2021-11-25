@@ -16,6 +16,8 @@ public class AbstractUserService implements IAbstractUserService{
 	public boolean isLoggedIn;
 
 	private AbstractUser tempUser;
+	
+	private AbstractUser tempPassword;
 
 	private static final Logger LOG = LoggerFactory.getLogger(AbstractUserService.class);
 
@@ -23,28 +25,40 @@ public class AbstractUserService implements IAbstractUserService{
 	AbstractUserRepository abstractUserRepository;
 
 	public AbstractUser register(AbstractUser abstractUser) {
-		LOG.info("register");
-		if (abstractUserRepository.findByUserName(abstractUser.getUserName())!=null)
+		LOG.info("Serviceregister");
+		if (abstractUserRepository.findByUserName(abstractUser.getUserName()) != null) {
+			LOG.error("User already exists");
 			throw new AbstractUserAlreadyExistsException();
-		return abstractUserRepository.save(abstractUser);
+		} else {
+			LOG.info("Register successfully");
+			return abstractUserRepository.save(abstractUser);
+		}
 	}
 
 	public AbstractUser login(AbstractUser abstractUser) {
-		LOG.info("login");
+		LOG.info("Servicelogin");
 		tempUser = abstractUserRepository.findByUserName(abstractUser.getUserName());
-		if (tempUser.getUserName().equalsIgnoreCase(abstractUser.getUserName())) {
+		tempPassword = abstractUserRepository.findByPassword(abstractUser.getPassword());
+		if (tempUser.getUserName().equalsIgnoreCase(abstractUser.getUserName()) &&
+				tempPassword.getPassword().equalsIgnoreCase(abstractUser.getPassword())) {
+			LOG.info("User logged in successfully");
 			isLoggedIn = true;
 			return tempUser;
-		}
+		}else {
+			LOG.error("User not found");
 		throw new AbstractUserNotFoundException();
+		
+	}
 	}
 
 	public String logout(String userName) {
-		LOG.info("logout");
+		LOG.info("Servicelogout");
 		if (isLoggedIn) {
 			isLoggedIn = false;
 			return "User logged out successfully.";
-		}
+		}else {
+		LOG.error("User not found");
 		throw new AbstractUserNotFoundException();
+	}
 	}
 }

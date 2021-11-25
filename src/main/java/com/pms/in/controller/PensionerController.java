@@ -27,10 +27,10 @@ public class PensionerController {
 
 	@Autowired
 	private PensionerService pensionerService;
-	// <PensionerDetails> getAllPensionersDetails
 
 	@GetMapping("/getpensioner")
 	public ResponseEntity<List<PensionerDetails>> getAllPensionersDetails() {
+		LOG.info("ControllergetAllPensionersDetails");
 		List<PensionerDetails> list = pensionerService.getAllPensionersDetails();
 
 		return new ResponseEntity<List<PensionerDetails>>(list, new HttpHeaders(), HttpStatus.OK);
@@ -38,7 +38,7 @@ public class PensionerController {
 
 	@PostMapping("/addpensioner")
 	public ResponseEntity<PensionerDetails> addpensioner(@RequestBody PensionerDetails pensionerdetails) {
-		LOG.info("Controller addPensioner");
+		LOG.info("ControlleraddPensioner");
 		PensionerDetails p1 = pensionerService.addPensionerDetails(pensionerdetails);
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("message", "This pensioner  is added to database.");
@@ -47,22 +47,20 @@ public class PensionerController {
 		return response;
 	}
 
-//Update
 	@PutMapping("/updatepensioner")
 	public ResponseEntity<PensionerDetails> updatepensioner(@RequestBody PensionerDetails pensionerdetails) {
-		LOG.info("Controller updatePensioner");
-		PensionerDetails  p1 = pensionerService. updatePensionerDetails(pensionerdetails);
+		LOG.info("ControllerupdatePensioner");
+		PensionerDetails p1 = pensionerService.updatePensionerDetails(pensionerdetails);
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("message", "This pensioner Details are updated to database.");
 		LOG.info(headers.toString());
 		ResponseEntity<PensionerDetails> response = new ResponseEntity<PensionerDetails>(p1, headers, HttpStatus.OK);
 		return response;
 	}
-	// Delete:
 
 	@DeleteMapping("/deletepensioner/{pensioner_id}")
-	public ResponseEntity<PensionerDetails> deletePensionerById(@PathVariable int pensioner_id ) {
-		LOG.info("deletepensioner");
+	public ResponseEntity<PensionerDetails> deletePensionerById(@PathVariable int pensioner_id) {
+		LOG.info("ControllerdeletePensionerById");
 		pensionerService.deletePensionerDetails(pensioner_id);
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("message", "This employee is deleted from database.");

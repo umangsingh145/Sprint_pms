@@ -13,15 +13,15 @@ import com.pms.in.entities.BankDetails;
 import com.pms.in.repository.BankRepository;
 
 @Service
-public class BankService implements IBankService{
-	
+public class BankService implements IBankService {
+
 	private static final Logger LOG = LoggerFactory.getLogger(BankService.class);
-	
+
 	@Autowired
 	private BankRepository bankRepository;
-	
+
 	public BankDetails getBankDetails(Long accno) {
-		LOG.info("getBankDetailsById");
+		LOG.info("ServicegetBankDetailsById");
 		Optional<BankDetails> bankOpt = bankRepository.findById(accno);
 		if (bankOpt.isPresent()) {
 			LOG.info("bank Details get successfully");
@@ -31,42 +31,40 @@ public class BankService implements IBankService{
 			throw new BankDoesNotExistsException("Bank does not exists");
 		}
 	}
-	
+
+	@Override
 	public BankDetails addBank(BankDetails bankDetails) {
-		LOG.info("addBankDetails");
-		if(!bankRepository.existsById(bankDetails.getAccno())){
+		LOG.info("ServiceaddBankDetails");
+		if (!bankRepository.existsById(bankDetails.getAccno())) {
 			LOG.info("Bank Details added successfully");
 			return bankRepository.save(bankDetails);
-		}
-		else {
+		} else {
 			LOG.info("This bank already exist in the database");
-		throw new BankAlreadyExistsException("This bank already exists in the database");
+			throw new BankAlreadyExistsException("This bank already exists in the database");
 		}
 	}
-	
+
 	public BankDetails updateBankDetails(BankDetails bankDetails) {
-		LOG.info("updateBankDeatils");
-		if(bankRepository.existsById(bankDetails.getAccno())){
+		LOG.info("ServiceupdateBankDeatils");
+		if (bankRepository.existsById(bankDetails.getAccno())) {
 			LOG.info("Bank Details update successfully");
 			return bankRepository.save(bankDetails);
-		}
-		else {
+		} else {
 			LOG.info("This bank already exist in the database");
-		throw new BankDoesNotExistsException("This bank already exists in the database");
+			throw new BankDoesNotExistsException("This bank already exists in the database");
 		}
 	}
 
-	public void deleteBankDetails(Long accno) {
-		LOG.info("deleteBankDeatils");
-		if(bankRepository.findById(accno) != null){
+	@Override
+	public void deleteBank(Long accno) {
+		LOG.info("ServicedeleteBankDeatils");
+		if (bankRepository.findById(accno) != null) {
 			LOG.info("Bank Details added successfully");
-		    bankRepository.deleteById(accno);
-		}
-		else {
+			bankRepository.deleteById(accno);
+		} else {
 			LOG.info("This bank already exist in the database");
-		throw new BankDoesNotExistsException("This bank already exists in the database");
+			throw new BankDoesNotExistsException("This bank already exists in the database");
 		}
 	}
 
-	
 }
