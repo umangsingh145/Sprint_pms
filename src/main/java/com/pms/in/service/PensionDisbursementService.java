@@ -63,9 +63,9 @@ public class PensionDisbursementService {
 		String typeOfPension = pensionerDetails.getPensionType();
 		double pension = -1;
 		if (typeOfPension.equalsIgnoreCase("Self")) {
-			pension = salary * (50 / 100);
+			pension = salary/2;
 		} else {
-			pension = salary * (25 / 100);
+			pension = salary/4;
 
 		}
 		pensionDetails.setAmount(pension);
