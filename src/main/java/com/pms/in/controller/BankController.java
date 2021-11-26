@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pms.in.entities.BankDetails;
+import com.pms.in.exception.AccountNotFoundException;
 import com.pms.in.service.BankService;
 
 @RestController
@@ -58,14 +59,16 @@ public class BankController {
 		return response;
 	}
 
-	@DeleteMapping("/deletebankbyid/{accno}")
-	public ResponseEntity<BankDetails> deleteBankById(@PathVariable Long accno) {
-		LOG.info("ControllerdeleteBankById");
-		bankService.deleteBank(accno);
+	@DeleteMapping("/deletebankbyaccno/{accno}")
+	public ResponseEntity<BankDetails> deleteBankByAcc(@PathVariable(name = "accno") Long accno)
+			throws AccountNotFoundException {
+		LOG.info("deletebankbyaccno");
+		BankDetails bank = bankService.deleteBankByAcc(accno); // line
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("message", "This bank is available in the database and deleted.");
+		headers.add("message", "This is Bank deleted successfully");
 		LOG.info(headers.toString());
-		ResponseEntity<BankDetails> response = new ResponseEntity<BankDetails>(headers, HttpStatus.OK);
+		ResponseEntity<BankDetails> response = new ResponseEntity<BankDetails>(bank, headers, HttpStatus.OK);
 		return response;
+
 	}
 }

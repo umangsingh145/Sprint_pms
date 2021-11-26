@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.pms.in.exception.AccountNotFoundException;
 import com.pms.in.exception.BankAlreadyExistsException;
 import com.pms.in.exception.BankDoesNotExistsException;
 import com.pms.in.entities.BankDetails;
@@ -56,15 +57,18 @@ public class BankService implements IBankService {
 	}
 
 	@Override
-	public void deleteBank(Long accno) {
-		LOG.info("ServicedeleteBankDeatils");
-		if (bankRepository.findById(accno) != null) {
-			LOG.info("Bank Details added successfully");
+	public BankDetails deleteBankByAcc(Long accno) throws AccountNotFoundException {
+		LOG.info("deleteBankByAcc");
+		Optional<BankDetails> bank = bankRepository.findById(accno);
+		if (bank.isPresent()) {
 			bankRepository.deleteById(accno);
+			return bank.get();
 		} else {
-			LOG.info("This bank already exist in the database");
-			throw new BankDoesNotExistsException("This bank already exists in the database");
+			LOG.info("acc No not avilable");
+			throw new AccountNotFoundException(accno + " this Account does not exits.");
+
 		}
+
 	}
 
 }

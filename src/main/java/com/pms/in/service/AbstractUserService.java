@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.pms.in.exception.AbstractUserAlreadyExistsException;
 import com.pms.in.exception.AbstractUserNotFoundException;
+import com.pms.in.exception.IncorrectLoginCredentialsException;
 import com.pms.in.entities.AbstractUser;
 import com.pms.in.repository.AbstractUserRepository;
 
@@ -35,22 +36,21 @@ public class AbstractUserService implements IAbstractUserService{
 		}
 	}
 
-	public AbstractUser login(AbstractUser abstractUser) {
-		LOG.info("Servicelogin");
-		tempUser = abstractUserRepository.findByUserName(abstractUser.getUserName());
-		tempPassword = abstractUserRepository.findByPassword(abstractUser.getPassword());
-		if (tempUser.getUserName().equalsIgnoreCase(abstractUser.getUserName()) &&
-				tempPassword.getPassword().equalsIgnoreCase(abstractUser.getPassword())) {
-			LOG.info("User logged in successfully");
+	@Override
+	public AbstractUser login(String userName, String password) {
+		LOG.info("login");
+		this.tempUser = abstractUserRepository.findByUserName(userName);
+		this.tempPassword=abstractUserRepository.findByPassword(tempUser.getPassword());
+		if (tempUser.getUserName().equalsIgnoreCase(userName) && tempPassword.getPassword().equals(password)) {
+			LOG.info("Logged in successfully.");
 			isLoggedIn = true;
 			return tempUser;
-		}else {
-			LOG.error("User not found");
-		throw new AbstractUserNotFoundException();
-		
-	}
+		}
+		LOG.error("User not found");
+		throw new IncorrectLoginCredentialsException();
 	}
 
+	@Override
 	public String logout(String userName) {
 		LOG.info("Servicelogout");
 		if (isLoggedIn) {

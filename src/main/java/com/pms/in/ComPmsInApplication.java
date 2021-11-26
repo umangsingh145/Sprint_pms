@@ -7,12 +7,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class ComPmsInApplication {
-	
+
 	private static final Logger LOG = LoggerFactory.getLogger(ComPmsInApplication.class);
 
-
 	public static void main(String[] args) {
-		
+
 		LOG.info("START");
 		SpringApplication.run(ComPmsInApplication.class, args);
 		LOG.info("END");

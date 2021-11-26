@@ -4,6 +4,6 @@ import com.pms.in.entities.AbstractUser;
 
 public interface IAbstractUserService {
 
-	public AbstractUser login(AbstractUser abstractUser);
-	public String logout(String userName);
+	public abstract AbstractUser login(String userName, String password);
+	public abstract String logout(String userName);
 }

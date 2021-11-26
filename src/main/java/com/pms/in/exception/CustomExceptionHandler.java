@@ -77,5 +77,45 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 		headers.add("message", "This Bank does not exists in the database.");
 		return new ResponseEntity<Object>(null, headers, HttpStatus.NOT_FOUND);
 	}
+	
+	@ExceptionHandler(IncorrectLoginCredentialsException.class)
+	public ResponseEntity<Object> handleIncorrectLoginCredentialsException() {
+		LOG.error("handleIncorrectLoginCredentials");
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("message", "Please enter correct data ");
+		return new ResponseEntity<Object>(null, headers, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(AdminDoesNotExistsException.class)
+	public ResponseEntity<Object> handleAdminDoesNotExistsException() {
+		LOG.error("handleAdminDoesNotExists");
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("message", "This admin is not logged in.");
+		return new ResponseEntity<Object>(null, headers, HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler(AdminAlreadyExistsException.class)
+	public ResponseEntity<Object> handleAdminAlreadyExistsException() {
+		LOG.error("handleAdminDoesNotExists");
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("message", "This admin is already available in the database.");
+		return new ResponseEntity<Object>(null, headers, HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler(AccountNotFoundException.class)
+	public ResponseEntity<Object> handleAccountNotFoundException() {
+		LOG.error("handleAccountNotFoundException");
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("message", "This Bank Account Not avilable.");
+		return new ResponseEntity<Object>(null, headers, HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler(PensionDetailsAlreadyExsitsException.class)
+	public ResponseEntity<Object> handlePensionDetailsAlreadyExsitsException() {
+		LOG.error("handlePensionDetailsAlreadyExsitsException");
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("message", "This pension details is already exsits in the database.");
+		return new ResponseEntity<Object>(null, headers, HttpStatus.NOT_FOUND);
+	}
 
 }

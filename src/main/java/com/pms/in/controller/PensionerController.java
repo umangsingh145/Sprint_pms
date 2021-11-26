@@ -63,7 +63,7 @@ public class PensionerController {
 		LOG.info("ControllerdeletePensionerById");
 		pensionerService.deletePensionerDetails(pensioner_id);
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("message", "This employee is deleted from database.");
+		headers.add("message", "This pensioner is deleted from database.");
 		LOG.info(headers.toString());
 		ResponseEntity<PensionerDetails> response = new ResponseEntity<PensionerDetails>(headers, HttpStatus.OK);
 		return response;
