@@ -31,7 +31,7 @@ public class BankController {
 		LOG.info("ControllergetBankById");
 		BankDetails ban = bankService.getBankDetails(accno);
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("successCode", "10");
+		headers.add("message", "This bank Details get successfully");
 		LOG.info(headers.toString());
 		ResponseEntity<BankDetails> response = new ResponseEntity<BankDetails>(ban, headers, HttpStatus.OK);
 		return response;

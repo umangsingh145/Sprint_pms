@@ -45,6 +45,14 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 		headers.add("message", "This pension details is NOT available in the database.");
 		return new ResponseEntity<Object>(null, headers, HttpStatus.NOT_FOUND);
 	}
+	
+	@ExceptionHandler(PensionDetailsAlreadyExsitsException.class)
+	public ResponseEntity<Object> handlePensionDetailsAlreadyExsitsException() {
+		LOG.error("handlePensionDetailsAlreadyExsitsException");
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("message", "This pension details is already exsits in the database.");
+		return new ResponseEntity<Object>(null, headers, HttpStatus.NOT_FOUND);
+	}
 
 	@ExceptionHandler(AbstractUserNotFoundException.class)
 	public ResponseEntity<Object> handleAbstractUserNotFoundException() {
@@ -110,12 +118,6 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<Object>(null, headers, HttpStatus.NOT_FOUND);
 	}
 	
-	@ExceptionHandler(PensionDetailsAlreadyExsitsException.class)
-	public ResponseEntity<Object> handlePensionDetailsAlreadyExsitsException() {
-		LOG.error("handlePensionDetailsAlreadyExsitsException");
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("message", "This pension details is already exsits in the database.");
-		return new ResponseEntity<Object>(null, headers, HttpStatus.NOT_FOUND);
-	}
+	
 
 }

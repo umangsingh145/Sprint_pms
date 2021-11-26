@@ -65,7 +65,7 @@ public class PensionController {
 		LOG.info("ControllerdeletePension");
 		PensionDetails pensionDetails = pensionService.deletePensionDetails(pensionid);
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("message", "Employee deleted successfully.");
+		headers.add("message", "Pension deleted successfully.");
 		ResponseEntity<PensionDetails> response = new ResponseEntity<PensionDetails>(pensionDetails, headers,
 				HttpStatus.OK);
 		return response;
