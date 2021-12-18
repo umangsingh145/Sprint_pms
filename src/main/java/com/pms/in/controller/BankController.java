@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pms.in.entities.BankDetails;
-import com.pms.in.exception.AccountNotFoundException;
+import com.pms.in.service.AdminService;
 import com.pms.in.service.BankService;
 
 @RestController
@@ -25,17 +25,29 @@ public class BankController {
 
 	@Autowired
 	private BankService bankService;
+	
+	@Autowired
+	public AdminService admin;
+	
+	
+	
+	
+
+	
+   
 
 	@GetMapping("/getbankbyid/{accno}")
 	public ResponseEntity<BankDetails> getBankById(@PathVariable(name = "accno") Long accno) {
 		LOG.info("ControllergetBankById");
 		BankDetails ban = bankService.getBankDetails(accno);
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("message", "This bank Details get successfully");
+		headers.add("successCode", "10");
 		LOG.info(headers.toString());
 		ResponseEntity<BankDetails> response = new ResponseEntity<BankDetails>(ban, headers, HttpStatus.OK);
 		return response;
 	}
+	
+	
 
 	@PostMapping("/addbankdetails")
 	public ResponseEntity<BankDetails> addBank(@RequestBody BankDetails bankDetails) {
@@ -59,16 +71,14 @@ public class BankController {
 		return response;
 	}
 
-	@DeleteMapping("/deletebankbyaccno/{accno}")
-	public ResponseEntity<BankDetails> deleteBankByAcc(@PathVariable(name = "accno") Long accno)
-			throws AccountNotFoundException {
-		LOG.info("deletebankbyaccno");
-		BankDetails bank = bankService.deleteBankByAcc(accno); // line
+	@DeleteMapping("/deletebankbyid/{accno}")
+	public ResponseEntity<BankDetails> deleteBankById(@PathVariable Long accno) {
+		LOG.info("ControllerdeleteBankById");
+		bankService.deleteBank(accno);
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("message", "This is Bank deleted successfully");
+		headers.add("message", "This bank is available in the database and deleted.");
 		LOG.info(headers.toString());
-		ResponseEntity<BankDetails> response = new ResponseEntity<BankDetails>(bank, headers, HttpStatus.OK);
+		ResponseEntity<BankDetails> response = new ResponseEntity<BankDetails>(headers, HttpStatus.OK);
 		return response;
-
 	}
 }

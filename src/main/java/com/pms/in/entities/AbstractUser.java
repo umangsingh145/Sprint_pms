@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+
+
 @Entity
 @Table(name = "user_details")
 public class AbstractUser {
@@ -15,12 +17,15 @@ public class AbstractUser {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int uid;
 
-	@Column(unique = true)
+	@Column(unique = true, nullable=false)
 	private String userName;
 
-	@Column
+	@Column(unique = true, nullable=false)
 	private String password;
-
+	
+	@Column
+	private Role role;
+	
 	public AbstractUser() {
 		super();
 	}
@@ -29,7 +34,13 @@ public class AbstractUser {
 		super();
 		this.userName = userName;
 		this.password = password;
+	}
 
+	public AbstractUser(String userName, String password, Role role) {
+		super();
+		this.userName = userName;
+		this.password = password;
+		this.role = role;
 	}
 
 	public AbstractUser(int uid, String userName, String password) {
@@ -37,7 +48,14 @@ public class AbstractUser {
 		this.uid = uid;
 		this.userName = userName;
 		this.password = password;
+	}
 
+	public AbstractUser(int uid, String userName, String password, Role role) {
+		super();
+		this.uid = uid;
+		this.userName = userName;
+		this.password = password;
+		this.role = role;
 	}
 
 	public int getUid() {
@@ -64,9 +82,57 @@ public class AbstractUser {
 		this.password = password;
 	}
 
-	@Override
-	public String toString() {
-		return "AppUser [uid=" + uid + ", userName=" + userName + ", password=" + password + "]";
+	public Role getRole() {
+		return role;
 	}
 
-}
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + ((role == null) ? 0 : role.hashCode());
+		result = prime * result + ((userName == null) ? 0 : userName.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof AbstractUser)) {
+			return false;
+		}
+		AbstractUser other = (AbstractUser) obj;
+		if (password == null) {
+			if (other.password != null) {
+				return false;
+			}
+		} else if (!password.equals(other.password)) {
+			return false;
+		}
+		if (role != other.role) {
+			return false;
+		}
+		if (userName == null) {
+			if (other.userName != null) {
+				return false;
+			}
+		} else if (!userName.equals(other.userName)) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "AppUser [uid=" + uid + ", userName=" + userName + ", password=" + password + ", role=" + role + "]";
+	}
+
+
+	}

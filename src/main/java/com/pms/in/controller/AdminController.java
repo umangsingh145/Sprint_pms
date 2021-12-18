@@ -43,8 +43,8 @@ public class AdminController {
 	return response;
 }
 
-	@PutMapping("/adminlogout")
-	public ResponseEntity<String> logout(@RequestBody String adminName) {
+	@PutMapping("/adminlogout/{admin}")
+	public ResponseEntity<String> logout(@PathVariable(name="admin") String adminName) {
 		LOG.info("Controllerlogout");
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("message", "Admin logged out successfully.");

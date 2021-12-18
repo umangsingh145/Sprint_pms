@@ -12,13 +12,17 @@ import com.pms.in.entities.AbstractUser;
 import com.pms.in.repository.AbstractUserRepository;
 
 @Service
-public class AbstractUserService implements IAbstractUserService{
+public class AbstractUserService implements IAbstractUserService {
 
-	public boolean isLoggedIn;
+	private boolean isLoggedIn;
 
 	private AbstractUser tempUser;
-	
+
 	private AbstractUser tempPassword;
+
+	public boolean getIsLoggedIn() {
+		return isLoggedIn;
+	}
 
 	private static final Logger LOG = LoggerFactory.getLogger(AbstractUserService.class);
 
@@ -37,17 +41,27 @@ public class AbstractUserService implements IAbstractUserService{
 	}
 
 	@Override
-	public AbstractUser login(String userName, String password) {
+	public AbstractUser login(AbstractUser abstractUser) {
 		LOG.info("login");
-		this.tempUser = abstractUserRepository.findByUserName(userName);
-		this.tempPassword=abstractUserRepository.findByPassword(tempUser.getPassword());
-		if (tempUser.getUserName().equalsIgnoreCase(userName) && tempPassword.getPassword().equals(password)) {
-			LOG.info("Logged in successfully.");
-			isLoggedIn = true;
-			return tempUser;
+		try {
+			this.tempUser = abstractUserRepository.findByUserName(abstractUser.getUserName());
+			this.tempPassword = abstractUserRepository.findByPassword(tempUser.getPassword());
+
+			if (tempUser.getUserName().equalsIgnoreCase(abstractUser.getUserName()) && tempPassword.getPassword().equals(abstractUser.getPassword())) {
+
+				LOG.info("Logged in successfully.");
+				isLoggedIn = true;
+				return tempUser;
+			} else {
+				LOG.error("User not found");
+				throw new IncorrectLoginCredentialsException();
+			}
+
+		} catch (Exception e) {
+			LOG.error("User not found");
+			throw new IncorrectLoginCredentialsException();
 		}
-		LOG.error("User not found");
-		throw new IncorrectLoginCredentialsException();
+
 	}
 
 	@Override
@@ -56,9 +70,9 @@ public class AbstractUserService implements IAbstractUserService{
 		if (isLoggedIn) {
 			isLoggedIn = false;
 			return "User logged out successfully.";
-		}else {
-		LOG.error("User not found");
-		throw new AbstractUserNotFoundException();
-	}
+		} else {
+			LOG.error("User not found");
+			throw new AbstractUserNotFoundException();
+		}
 	}
 }
